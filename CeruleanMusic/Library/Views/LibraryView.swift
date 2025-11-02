@@ -15,7 +15,7 @@ struct LibraryView: View {
             ForEach(vms) { vm in
                 SingleMusicView(viewModel: vm)
             }
-        }
+        }.backgroundStyle(.clear)
     }
 }
 

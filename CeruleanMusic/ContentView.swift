@@ -11,6 +11,7 @@ struct ContentView: View {
     @StateObject var sourceData: SourceData =  SourceData(
         sources: [LocalSource(url: URL(filePath: "/Users/zelda/Music/m"))]
     )
+    @StateObject var musicController: MusicControllerViewModel = MusicControllerViewModel()
     
     enum Page {
         case music
@@ -23,7 +24,7 @@ struct ContentView: View {
         case null
     }
 
-    @State var page: Page = .music
+    @State var page: Page = .source
     @State var sideBar: SideBar = .playList
     var body: some View {
         HStack{
@@ -44,13 +45,20 @@ struct ContentView: View {
                 }.listStyle(.sidebar)
             } detail: {
                 ZStack{
-                    switch page {
-                    case .music:
-                        LibraryView(vms: [MusicViewModel(LocalMusic(url: URL(filePath:"/Users/zelda/Music/m/中島みゆき/10 Wings/01. 二隻(そう)の舟.m4a")))])
-                    case .home:
-                        EmptyView()
-                    case .source:
-                        SourceSettingPageView(sourceData: sourceData)
+                    ZStack{
+                        switch page {
+                        case .music:
+                            LibraryView(vms: [MusicViewModel(LocalMusic(url: URL(filePath:"/Users/zelda/Music/m/中島みゆき/10 Wings/01. 二隻(そう)の舟.m4a")))])
+                        case .home:
+                            EmptyView()
+                        case .source:
+                            SourceSettingPageView(sourceData: sourceData)
+                        }
+                    }.safeAreaPadding(.bottom, 60)
+                    
+                    VStack{
+                        Spacer()
+                        MusicPlayerView(viewModel: musicController)
                     }
                 }.padding()
             }
